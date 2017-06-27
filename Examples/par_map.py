@@ -4,10 +4,12 @@ from mpi4py import MPI
 
 def myslice(n, size, rank):
     m, r = divmod(n, size)
-    if r > 0:
+    if r > rank:
         m += 1
-    start = rank * m
-    end = min(start + m, n)
+        start = rank * m
+    else:
+        start = rank * m + r
+    end = start + m
     return slice(start, end)
 
 comm = MPI.COMM_WORLD
